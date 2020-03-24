@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class point : MonoBehaviour
 {
-    public double x, y, z, intensity, timestamp, ring, reflectivity, noise, range;
+    public float x, y, z, intensity, timestamp, ring, reflectivity, noise, range;
 
-    public point(double xVal, double yVal, double zVal, double inten, double tmst, double ringg, double refl, double ns, double rng)
+    public point(float xVal, float yVal, float zVal, float inten, float tmst, float ringg, float refl, float ns, float rng)
    {
         x=xVal;
         y=yVal;
@@ -20,15 +20,15 @@ public class point : MonoBehaviour
    }//end of constructor
 
     //setters
-    public void Set_X(double value){x=value;}
-    public void Set_Y(double value){y=value;}
-    public void Set_Z(double value){z=value;}
-    public void Set_Intensity(double value){intensity=value;}
-    public void Set_Timestamp(double value){timestamp=value;}
-    public void Set_Ring(double value){ring=value;}
-    public void Set_Ref(double value){reflectivity=value;}
-    public void Set_Noise(double value){noise=value;}
-    public void Set_Rng(double value){range=value;}
+    public void Set_X(float value){x=value;}
+    public void Set_Y(float value){y=value;}
+    public void Set_Z(float value){z=value;}
+    public void Set_Intensity(float value){intensity=value;}
+    public void Set_Timestamp(float value){timestamp=value;}
+    public void Set_Ring(float value){ring=value;}
+    public void Set_Ref(float value){reflectivity=value;}
+    public void Set_Noise(float value){noise=value;}
+    public void Set_Rng(float value){range=value;}
 
 }//end of class
 

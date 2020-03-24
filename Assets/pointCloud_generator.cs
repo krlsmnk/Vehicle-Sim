@@ -7,14 +7,17 @@ using System;
 
 public class pointCloud_generator : MonoBehaviour
 {
-    public TextAsset currentFrame;    
+    public TextAsset currentFrame;
+    public int cullingRadius;
     private int lineNum=0; //used to keep track of the header
     private char[] delimiterChars = {','}; //characters which will be removed when parsing the file
-    private double[] pointVals = {0,0,0,0,0,0,0,0,0};
-    public List<point> pointCloud;
+    private float[] pointVals = {0,0,0,0,0,0,0,0,0};
+    private List<point> pointCloud;
 
     void Start()
     {
+        pointCloud = new List<point>();
+
         string filePath = AssetDatabase.GetAssetPath(currentFrame);
         readTextFile(filePath);
     }//end of start
@@ -44,19 +47,32 @@ public class pointCloud_generator : MonoBehaviour
                 string[] splitLine = inp_ln.Split(delimiterChars);
                 if(splitLine.Length == 9) //skip data entry if not formatted correctly
                 {                
-                    //cast all values as doubles
+                    //cast all values as floats
                     for(int i=0; i<9; i++){
     //Debug.Log("Attempting to parse: " + splitLine[i]);
                         try{
-                            pointVals[i] = Double.Parse(splitLine[i]);
+                            pointVals[i] = float.Parse(splitLine[i]);
                         }
                         catch
                         {
-                            Debug.Log("Could not parse: " + splitLine[i] + " in slot: " + i + " on line: " + lineNum);
+    //Debug.Log("Could not parse: " + splitLine[i] + " in slot: " + i + " on line: " + lineNum);
                             skipPoint = true;
                         }
                     }
                 
+                    //cull user-defined radius (if they have defined one)
+                    if(cullingRadius!= 0)
+                        {
+                            //if |x|, |y|, or |z| are larger than the culling radius, skip that point
+                            if( (Math.Abs(pointVals[0]) > cullingRadius) 
+                                || (Math.Abs(pointVals[1]) > cullingRadius)
+                                || (Math.Abs(pointVals[2]) > cullingRadius)
+                            )
+                            {
+                                skipPoint = true;
+                            }
+                        }
+
     //Debug.Log(pointVals);
 
                     //avoid junk data
@@ -65,11 +81,12 @@ public class pointCloud_generator : MonoBehaviour
                         //make a point and add it to the cloud
                         try
                         {
+    //Debug.Log("Made point");
                             pointCloud.Add(new point(pointVals[0], pointVals[1], pointVals[2], pointVals[3], pointVals[4], pointVals[5], pointVals[6], pointVals[7], pointVals[8]));
                         }
                         catch
                         {
-                            Debug.Log("Skipped making point: " + lineNum);
+    //Debug.Log("Skipped making point: " + lineNum);
                         }                   
                     } 
                 }
@@ -86,10 +103,19 @@ public class pointCloud_generator : MonoBehaviour
     }//end of readTxt
 
 
-    private void drawCloud(List<point> pointCloud)
-    {
-        
-        Debug.Log(pointCloud.Count);
+    private void drawCloud(List<point> passedCloud)
+    {        
+        //Debug.Log(pointCloud.Count);
+
+        foreach (point currentPoint in passedCloud){
+            //create an instance of the point prefab at the point's coordinates
+            GameObject point = Instantiate(Resources.Load("Point", typeof(GameObject)) as GameObject);
+            point.transform.position = new Vector3(currentPoint.x, currentPoint.y, currentPoint.z);
+            
+            //assign color to point
+            //point.GetComponent<SpriteRenderer>().color = new Color(0f, 0f, 0f, 1f); // Set to opaque black
+
+        }
 
     }//end of drawCloud
 
