@@ -4,22 +4,36 @@ using UnityEngine;
 using System.IO;
 using UnityEditor;
 using System;
+using static UnityEngine.ParticleSystem;
 
 public class pointCloud_generator : MonoBehaviour
 {
     public TextAsset currentFrame;
+    
     public int cullingRadius;
+    
     private int lineNum=0; //used to keep track of the header
+    
     private char[] delimiterChars = {','}; //characters which will be removed when parsing the file
+    
     private float[] pointVals = {0,0,0,0,0,0,0,0,0};
+    
     private List<point> pointCloud;
+    
+    private ParticleSystem lidarDisplay;
+
+    private ParticleSystem.Particle[] particles;
 
     void Start()
     {
         pointCloud = new List<point>();
+        particles = new ParticleSystem.Particle[0];
+        lidarDisplay = gameObject.GetComponent<ParticleSystem>();
 
         string filePath = AssetDatabase.GetAssetPath(currentFrame);
         readTextFile(filePath);
+
+        RenderLidar();
     }//end of start
 
 
@@ -98,10 +112,40 @@ public class pointCloud_generator : MonoBehaviour
        inp_stm.Close( );
         
        //draw cloud
-       drawCloud(pointCloud);
+       //drawCloud(pointCloud);
+       drawCloudParticles(pointCloud);
 
     }//end of readTxt
 
+    private void drawCloudParticles(List<point> passedCloud)
+    {
+        //create an array of particles with size = #points
+        List<ParticleSystem.Particle> newParticles = new List<ParticleSystem.Particle>();
+
+        int i = 0;
+        foreach(point currentPoint in passedCloud)
+        {
+            //create a particle
+            newParticles.Add(new ParticleSystem.Particle
+                        {
+                            remainingLifetime = float.MaxValue,
+                            position = new Vector3(currentPoint.x, currentPoint.y, currentPoint.z),
+                            startSize = 1f,
+                            startColor = Color.white
+                        });                        
+        }
+        particles = newParticles.ToArray();
+        
+    }
+
+    private void RenderLidar()
+        {
+            var p = particles;
+            if (p.Length > 0)
+            {
+                lidarDisplay.SetParticles(particles, particles.Length);
+            }
+        }
 
     private void drawCloud(List<point> passedCloud)
     {        
