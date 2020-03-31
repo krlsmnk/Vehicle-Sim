@@ -129,12 +129,13 @@ public class pointCloud_generator : MonoBehaviour
             newParticles.Add(new ParticleSystem.Particle
                         {
                             remainingLifetime = float.MaxValue,
-                            position = new Vector3(currentPoint.x, currentPoint.y, currentPoint.z),
+//FLIP y and z
+                            position = new Vector3(currentPoint.y, currentPoint.z, currentPoint.x),
                             startSize = 1f,
-                            startColor = Color.white
+                            startColor = calculateColor(currentPoint)
                         });                        
         }
-        particles = newParticles.ToArray();
+               particles = newParticles.ToArray();
         
     }
 
@@ -162,6 +163,22 @@ public class pointCloud_generator : MonoBehaviour
         }
 
     }//end of drawCloud
+
+    private Color32 calculateColor(point currentPoint)
+    {
+        float multiplier = 1 / cullingRadius;
+        
+        //Color32 pointColor = new Color(Math.Abs(currentPoint.x)*multiplier, Math.Abs(currentPoint.y)*multiplier, Math.Abs(currentPoint.z)*multiplier, 1);
+        Color32 pointColor = new Color(sigmoid(currentPoint.x), sigmoid(currentPoint.y), sigmoid(currentPoint.z), 1);
+//Debug.Log(currentPoint.x + ", " + currentPoint.y + ", " + currentPoint.z + ", " + pointColor.ToString());
+
+        return pointColor;
+    }
+
+    private float sigmoid(float x)
+    {
+        return Convert.ToSingle(1.0 / (1.0 + Math.E-x));
+    }
 
 
 }//end of class
