@@ -30,5 +30,18 @@ public class point : MonoBehaviour
     public void Set_Noise(float value){noise=value;}
     public void Set_Rng(float value){range=value;}
 
+    override public string ToString()
+    {
+        return x + ", " +
+            y + ", " +
+            z + ", " +
+            intensity + ", " +
+            timestamp + ", " +
+            ring + ", " +
+            reflectivity + ", " +
+            noise  + ", " + 
+            range;
+    }
+
 }//end of class
 

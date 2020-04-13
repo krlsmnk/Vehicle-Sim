@@ -957,9 +957,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 596151724}
-  - component: {fileID: 596151723}
   - component: {fileID: 596151726}
   - component: {fileID: 596151725}
+  - component: {fileID: 596151723}
   m_Layer: 0
   m_Name: Point Cloud Generator
   m_TagString: Untagged
@@ -976,10 +976,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 596151722}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02d38f240023eab4096348df0440dc70, type: 3}
+  m_Script: {fileID: 11500000, guid: e92f2f224370134428560e59dd7572d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentFrame: {fileID: 4900000, guid: 39135504ea4f6d4408b38a3927b6f981, type: 3}
+  parsedFile: {fileID: 4900000, guid: 4e70c8acc06fc7e40bd8242aa870cd13, type: 3}
   cullingRadius: 8
 --- !u!4 &596151724
 Transform:
@@ -6194,6 +6194,51 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1249308369}
   m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1192789936
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1192789938}
+  - component: {fileID: 1192789937}
+  m_Layer: 0
+  m_Name: Parse Frame (DISABLE IF NOT USING)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &1192789937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1192789936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77155d1830b1f8d4cbba5c49c6303445, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentFrame: {fileID: 4900000, guid: 39135504ea4f6d4408b38a3927b6f981, type: 3}
+  cullingRadius: 8
+--- !u!4 &1192789938
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1192789936}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.000019192696, y: 1.3826634, z: 0.11811423}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1194582872
 GameObject:
