@@ -58,3 +58,10 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
+#Large dataframe text files
+*.pcdParsed.txt
+*.pcdParsed.txt.meta
+
+#Large dataframe files, including .png's
+Assets/dataframe/
+Assets/dataframe.meta

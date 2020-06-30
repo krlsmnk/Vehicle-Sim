@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -10,8 +11,13 @@ public class PointCloud : MonoBehaviour {
     ParticleSystem m_System;
     ParticleSystem.Particle[] m_Particles;
     bool bPointsUpdated = false;
-    public TextAsset parsedFile;
+    //public TextAsset parsedFile;
     public int cullingRadius;
+    private string filePath = "C:/Users/krlsmnk/Documents/GitHub/Vehicle Sim/Assets/dataframe/fog2_pcd_ASCII/top/";
+    public float timeRemaining;
+    public bool isCountingDown = false;
+    public int iterator =0;
+    FileInfo[] globalInfo;
 
 	// Use this for initialization
 	void Start () {
@@ -80,34 +86,21 @@ public class PointCloud : MonoBehaviour {
     public void SetPoints(int points)
     {
         Vector3[] pos = new Vector3[points];
-        Color[] col = new Color[points];
-        
+        Color[] col = new Color[points];      
 
-        //pull values from the pre-parsed file
-        readFile(parsedFile);
+        getParsedFilesFromDirectory();
 
-        // update the particle system
 
-        /*
-        // Get the particle array
-        int numParticlesAlive = m_System.GetParticles(m_Particles);
-       
-        // if particle count less than points being updated
-        if(numParticlesAlive < points)
-        {
-            // emit some more particles
-            m_System.Emit(points - numParticlesAlive);
-            numParticlesAlive = m_System.GetParticles(m_Particles);
-        }
-        */
     }
 
-    private void readFile(TextAsset parsedFile)
+    private void readFile(string parsedFilePath)
     {
+
+
         //reads the parsed point file and makes particles
         List<ParticleSystem.Particle> newParticles = new List<ParticleSystem.Particle>();
-        string filePath = AssetDatabase.GetAssetPath(parsedFile);
-        StreamReader inp_stm = new StreamReader(filePath);
+        //string filePath = AssetDatabase.GetAssetPath(parsedFile);
+        StreamReader inp_stm = new StreamReader(parsedFilePath);
         
         //For each line in file:
         while(!inp_stm.EndOfStream)
@@ -131,12 +124,18 @@ public class PointCloud : MonoBehaviour {
         var p = newParticles.ToArray();
             if (p.Length > 0)
             {
+                //Find all other particle systems and clear them
+                ParticleSystem[] allPartSystems = GameObject.FindObjectsOfType<ParticleSystem>();
+                foreach(ParticleSystem currentSystem in allPartSystems) currentSystem.Clear();
+                        
+                //m_System.Clear(); //remove any existing particles to prevent bloat
                 m_System.SetParticles(p, p.Length);
+                //m_Particles = p;
             }
 
     }
     
-     private Color32 calculateColor(string[] splitPoint)
+    private Color32 calculateColor(string[] splitPoint)
     {
         float multiplier = 1 / cullingRadius;               
         Color32 pointColor = new Color(sigmoid(float.Parse(splitPoint[0])), sigmoid(float.Parse(splitPoint[1])), sigmoid(float.Parse(splitPoint[2])), 1);
@@ -144,10 +143,73 @@ public class PointCloud : MonoBehaviour {
         return pointColor;
     }
 
-      private float sigmoid(float x)
+    private float sigmoid(float x)
     {
         return Convert.ToSingle(1.0 / (1.0 + Math.E-x));
     }
     
-    }//end of class
+     /// <summary>
+    /// Given a file directory, this method gets all the parsed .txt pointCloud files
+    /// </summary>
+    /// <param name="v"></param>
+    private void getParsedFilesFromDirectory()
+    {        
+         DirectoryInfo dir = new DirectoryInfo(filePath);
+         globalInfo = dir.GetFiles("*.txt");
+         drawPointClouds();
+         
+         
+        /*
+        info.Select(f => f.FullName).ToArray());
+        foreach (FileInfo f in info) 
+         {
+            
+            if (!isCountingDown) { 
+            //Load the pointCloud from this file, then set a timer until load the next one
+             string newFilePath = filePath + f.Name;
+    Debug.Log("Reading File: " + newFilePath);
+             readFile(newFilePath);
+             setWaitTimer(15f); //wait X seconds until loading the next pointCloud
+             }
+         }//end of forEachFile
+         */
+    }
+
+    private void drawPointClouds()
+    {
+        if (iterator < globalInfo.Length) { 
+            string newFilePath = filePath + globalInfo[iterator].Name;
+        Debug.Log("Reading File: " + newFilePath);
+            readFile(newFilePath);
+            setWaitTimer(1f); //wait X seconds until loading the next pointCloud
+        }
+    }
+
+
+
+    /// <summary>
+    /// Method waits a number of seconds
+    /// </summary>
+    /// <param name="duration"></param>
+    private void setWaitTimer(float duration)
+    {        
+        if (!isCountingDown) {
+             isCountingDown = true;
+             timeRemaining = duration;
+             Invoke ( "_tick", 10f );
+         }
+    }
+
+    private void _tick() {
+         timeRemaining--;
+         if(timeRemaining > 0) {
+             Invoke ( "_tick", 1f );
+         } else {
+             isCountingDown = false;
+            iterator++;
+            drawPointClouds();
+         }
+     }
+
+}//end of class
 
