@@ -18,6 +18,7 @@ public class PointCloud : MonoBehaviour {
     public bool isCountingDown = false;
     public int iterator =0;
     FileInfo[] globalInfo;
+    public float timeBetweenFrames;
 
 	// Use this for initialization
 	void Start () {
@@ -30,10 +31,10 @@ public class PointCloud : MonoBehaviour {
         
         if(Input.GetKeyDown("space"))
         {
+            Debug.Log("Space bar pressed: Setting points");
             SetPoints(m_System.maxParticles/2);
             //RandomColorChange();
-            //RandomPositionChange();
-            Debug.Log("Set points");
+            //RandomPositionChange();            
         }
 	}
 
@@ -196,7 +197,7 @@ public class PointCloud : MonoBehaviour {
         if (!isCountingDown) {
              isCountingDown = true;
              timeRemaining = duration;
-             Invoke ( "_tick", 10f );
+             Invoke ( "_tick", timeBetweenFrames );
          }
     }
 

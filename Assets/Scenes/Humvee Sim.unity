@@ -669,9 +669,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &292608453
 MeshRenderer:
@@ -979,10 +979,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e92f2f224370134428560e59dd7572d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parsedFile: {fileID: 4900000, guid: 4e70c8acc06fc7e40bd8242aa870cd13, type: 3}
   cullingRadius: 8
   timeRemaining: 0
   isCountingDown: 0
+  iterator: 0
+  timeBetweenFrames: 1.5
 --- !u!4 &596151724
 Transform:
   m_ObjectHideFlags: 0
@@ -5796,7 +5797,7 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
@@ -6132,9 +6133,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 0
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &1070544180
 MeshRenderer:
@@ -6228,6 +6229,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentFrame: {fileID: 4900000, guid: 39135504ea4f6d4408b38a3927b6f981, type: 3}
   cullingRadius: 8
+  ringModulo: 3
 --- !u!4 &1192789938
 Transform:
   m_ObjectHideFlags: 0
@@ -6363,9 +6365,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 14
+  m_CookingOptions: 30
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &1249308367
 MeshRenderer:
@@ -6475,7 +6477,7 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
@@ -6750,7 +6752,7 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
@@ -6980,7 +6982,7 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}

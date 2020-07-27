@@ -27,14 +27,16 @@ public class parseFrame : MonoBehaviour
 
     private ParticleSystem.Particle[] particles;
 
-    private string filePath;
+    private string readFromPath, writeToPath;
 
-    public int cullingRadius;
+    public int cullingRadius; //cull points farther than "n" on either X, Y, or Z dimension
+    public int ringModulo; //skip every "n-th" ring (modulo2 = only even rings, modulo3= skip every 3rd ring, etc)
 
     void Start()
     {
         pointCloud = new List<point>();
-        filePath = "C:/Users/krlsmnk/Documents/GitHub/Vehicle Sim/Assets/dataframe/fog2_pcd_ASCII/top/";
+        readFromPath = "C:/Users/krlsmnk/Documents/GitHub/Vehicle Sim/Assets/dataframe/fog2_pcd_ASCII/top/bak/";
+        writeToPath = "C:/Users/krlsmnk/Documents/GitHub/Vehicle Sim/Assets/dataframe/fog2_pcd_ASCII/top/";
 
 
         //AUTO MODE:
@@ -53,12 +55,12 @@ public class parseFrame : MonoBehaviour
     /// <param name="v"></param>
     private void parseFileDirectory()
     {        
-         DirectoryInfo dir = new DirectoryInfo(filePath);
+         DirectoryInfo dir = new DirectoryInfo(readFromPath);
          FileInfo[] info = dir.GetFiles("*.pcd");
          info.Select(f => f.FullName).ToArray();
          foreach (FileInfo f in info) 
          { 
-             string newFilePath = filePath + f.Name;
+             string newFilePath = readFromPath + f.Name;
     Debug.Log("Attempting to parse: " + newFilePath);
              parseFile(newFilePath);
          }
@@ -124,6 +126,16 @@ public class parseFrame : MonoBehaviour
                                 skipPoint = true;
                             }
                         }
+                    //cull user-defined ring values (if they have defined one)
+                    if(ringModulo != 0)
+                        {
+                            //if ring is not modulo 0, skip that point
+                            if(pointVals[6] % ringModulo == 0) 
+                            {
+                                skipPoint = true;
+                            }
+                        }
+
 
     //Debug.Log(pointVals);
 
@@ -140,12 +152,11 @@ public class parseFrame : MonoBehaviour
                         }
                         catch
                         {
-                            Debug.Log("Skipped making point: " + lineNum);
+     //Debug.Log("Skipped making point: " + lineNum);
                         }                   
                     } 
                 }
-                
-            
+                            
 
         lineNum++; //increment line count
        }//end of for each line
@@ -167,7 +178,7 @@ public class parseFrame : MonoBehaviour
             lines.Add(currentPoint.ToString());
         }
         string[] lineArray = lines.ToArray();
-        System.IO.File.WriteAllLines(filePath2 + "Parsed.txt", lineArray);        
+        System.IO.File.WriteAllLines(writeToPath + "Parsed.txt", lineArray);        
     }
 
   
